@@ -1,0 +1,64 @@
+Aula 3 - noSQL
+
+//Exercício 1
+//A) contar as palavras que terminam nas duas letras abaixo.
+db.Vocabulary.mapReduce(
+			function() {emit(this.text, 1);},
+			function(key,value) {return Array.sum(value)}, //reduce
+			{
+			query: {$or: [{"text" : /ar$/},{"text" : /er$/},{"text" : /ir$/},
+				      {"text" : /or$/},{"text" : /ur$/}]},
+			out: "total"
+			}
+			)
+
+// segunda solução - mais limpa
+var map = function(){
+	emit(this.text.substring(this.text.length-2,this.text.length),1);
+		    }
+
+var reduce = function(key, values){
+	return Array.sum(values);
+				  }
+
+db.Vocabulary.mapReduce(map,reduce,{query:{
+					text: /((ar)|(er)|(ir)|(or)|(ur))$/
+					  }
+				  ,out:"resultado"})
+
+
+
+
+//B) Contar o número de letras na collection
+db.Vocabulary.mapReduce(
+			function() {
+			if (this.text == undefined) return;
+			
+			for (var letra =0; letra < this.text.length; letra ++)
+			{
+			emit(this.text[letra],1);
+			}
+				   }, //MAP
+			function(key,value) {return Array.sum(value)}, //red
+				{
+				 query: {},
+				 out : "Total de letras"
+				}
+				)
+
+
+
+// Segunda Solução
+var map = function(){
+	if (this.text == undefined) return;
+
+	for (var letra = 0; letra < this.text.length; letra ++){
+		emit(this.text[letra],1);	
+								}
+		    }
+
+var reduce = function(key, value){
+	return Array.sum(value);
+				 }
+
+db.Vocabulary.mapReduce(map, reduce, {query:{}, out:"Resultado"})

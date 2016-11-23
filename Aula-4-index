@@ -1,0 +1,11 @@
+# Aula 4
+# Exercício 1
+
+
+db.Vocabulary.find({"text":"feliz"}).explain({"executionStats":1})
+
+A) Número de Documentos Escaneados: 291214
+B) Tempo que levou para fazer a consulta: 434 ms
+C) Índice no campo TEXT: db.Vocabulary.createIndex({"text":1})
+D) Número de Documentos que foram Escaneados: 1
+E) Tempo que levou para fazer a consulta: ~0 ms

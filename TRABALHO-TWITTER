@@ -4,5 +4,8 @@ b) Extrair informações do tipo:
     termos mais frequentes
     volume por dia
     volume por hora do dia
-    
+
+Foi desenvolvido um código em Python para capturar tweets e foram utilizadas dois métodos distintos para analisar os termos mais frequentes:
+1) dentro do próprio código Python
+2) utilizando a função mapreduce dentro do Banco de Dados Mondodb (para Windows).
     

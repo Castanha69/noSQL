@@ -8,4 +8,9 @@ b) Extrair informações do tipo:
 Foi desenvolvido um código em Python para capturar tweets e foram utilizadas dois métodos distintos para analisar os termos mais frequentes:
 1) dentro do próprio código Python
 2) utilizando a função mapreduce dentro do Banco de Dados Mondodb (para Windows).
-    
+
+
+Código de Captura : arquivo: xxxxxxx.py
+Código de tratamento dos tweets e contagem : xxxxxx.py
+Código de mapreduce: xxxxxxxx.txt
+

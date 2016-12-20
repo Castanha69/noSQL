@@ -44,7 +44,7 @@ if __name__ == '__main__':
                          stopwords=stopword_list)
 
         terms_all = [term for term in tokens]
-        terms_bigram = bigrams(terms_all)
+        terms_bigram = bigrams(terms_all) #juntei dois tokens dos mesmos tweets, buscando mais sentido.
         # Update the counter
         count_all.update(terms_bigram)
 

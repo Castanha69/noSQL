@@ -1,6 +1,6 @@
-# Trabalho Prático:
-## a) Coletar dados de redes sociais ou importar dados externos e armazenar 1MM de dados em um banco de Dados noSQL.
-## b) Extrair informações do tipo: 
+Trabalho Prático:
+a) Coletar dados de redes sociais ou importar dados externos e armazenar 1MM de dados em um banco de Dados noSQL.
+b) Extrair informações do tipo: 
     .1) termos mais frequentes
     .2) volume por dia
     .3) volume por hora do dia

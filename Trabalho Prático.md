@@ -55,11 +55,42 @@ Vemos que o range de palavras variam bastante indo de uma noção religiosa cris
 ### A COLETA E TRATAMENTO dos TWEETS
 A coleta dos tweets é feita através do acesso ao Twitter, pela aplicação que foi criada inicialmente no twitter.
 Quando criamos a aplicação no twitter chaves e tokens de acesso são criados para que apenas o dono da aplicação possa fazer uso da mesma.
-Ex.: 
-| ConsumerKey (API Key) | rPQLXBYOnk3TbKgzX2Qe8TfJx |
-| Consumer Secret (API Secret) | t31Pi0v4lJfMaZ4H9csEqt2uUwotiTDLC7waxHAnAWtHA3Uf3A | 
-
+Ex.:  
+ ConsumerKey (API Key)        -> rPQLXBYOnk3TbKgzX2Qe8TfJx  
+ `Consumer Secret (API Secret) -> t31Pi0v4lJfMaZ4H9csEqt2uUwotiTDLC7waxHAnAWtHA3Uf3A`  
+ Access Token                 -> 805224390954782720-eLwQWp5C7ncpmgqUKWvZ72Y1hdgtjYE  
+ `Access Token Secret          -> RdSsAiXmSRh1lEMeMLX0lBUdnocH73P0aEZnuRgBWtUJ8`  
+ 
 Assim temos de passar tokens e dados de acesso a aplicação para que nosso acesso seja liberado.
+Isto é feito enviando via APIs ao Twitter os dados acima:
+```python
+consumer_Key = "rPQLXBYOnk3TbKgzX2Qe8TfJx"
+consumer_Secret = "t31Pi0v4lJfMaZ4H9csEqt2uUwotiTDLC7waxHAnAWtHA3Uf3A"
+access_Token = "805224390954782720-eLwQWp5C7ncpmgqUKWvZ72Y1hdgtjYE"
+access_Secret = "RdSsAiXmSRh1lEMeMLX0lBUdnocH73P0aEZnuRgBWtUJ8"
+
+auth = OAuthHandler(consumer_Key, consumer_Secret)
+auth.set_access_token(access_Token, access_Secret)
+stream = Stream(auth, l)
+```
+Após isto podemos começar a coletar os twitters com o comando abaixo:  
+```python
+stream.filter(track=Words_to_Track)
+```
+Através do comando stream.filter iremos coletar todos os twitters que contenham as palavras que definimos anteriormente. Um fato interessante é que dependendo da hora e das palavras a coleta será rápida ou lenta.
+
+Um fato que observamos após as coletas é que forma coletados twitters de todas as linguas, que contivessem alguma das palavras de busca. Assim foram coletados twitters em português, inglês e espanhol. Isto irá afetar, mais a frente, o tratamento das frequências dos termos, pois teremos três idiomas.
+
+#### Tratamento dos Twitters
+Aproveitamos para já dar um tratamento aos twitters tão logo os capturássemos, atuando sobre o campo 'texto' que é a mensagem que é tuitada e já a dividindo em termos independentes e não mais como uma frase. Isto quer dizer, desconsideramos as pontuações e outros caracteres.
+Fizemos isto com o intuito de ganhar tempo já que o nosso objetivo neste trabalho prático é determinar com que frequência alguns termos são utilizados.
+Assim, tão logo capturavamos o twitter, já transformávamos o texto em TOKENS, ou melhor, uma lista de palavras. Isto era feito com o comando:
+```python
+tokens = process(text=tweet.get('text', ''),
+                             tokenizer=tweet_tokenizer,
+                             stopwords=stopword_list)
+```
+Para esta tarefa de transformar em TOKENS o texto utilizamos os pacotes NLTK, que é uma plataforma líder para construir programas em Python para trabalhar com dados de linguagem humana.
 
 
 

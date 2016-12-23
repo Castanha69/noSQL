@@ -47,7 +47,8 @@ Words_to_Track = ['Natal','felicidade','amor','paz','alegria','árvore','famíli
                   'papai noel','saco de presentes',
                   'bebedeira','festa de fim de ano','fim de ano','sexo','camisinha','suruba',
                   'ano novo', 'dinheiro']
-                  ```
+```                  
+                  
 Vemos que o range de palavras variam bastante indo de uma noção religiosa cristã à termos mais associados a festas pagãs. Com isto buscávamos abordar os diferentes grupos de indivíduos que se comunicaram durante o período.
 
 

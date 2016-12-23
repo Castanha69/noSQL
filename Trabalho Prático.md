@@ -8,10 +8,10 @@
 
 
 - [x] **termos mais frequentes:**
-> Escolhemos a rede social TWITTER como objeto de nosso trabalho, por já termos tido uma experiência inicial com a mesma em aula.
+Escolhemos a rede social TWITTER como objeto de nosso trabalho, por já termos tido uma experiência inicial com a mesma em aula.
 Para a captura dos dados, foi desenvolvido um código em Python para capturar tweets e em seguida armazená-los. Como efeito de estudo armazenamos estes dados em dois formatos: arquivo json e dentro do Banco de Dados MongoDB.
 
-> segue o código do arquivo para coleta:
+segue o código do arquivo para coleta:
 
 ``` python
 
@@ -20,7 +20,7 @@ import sys
 import time
 import pymongo
 import re
-mport string
+import string
 from tweepy import Stream
 from tweepy.auth import OAuthHandler
 from tweepy.streaming import StreamListener
@@ -57,13 +57,13 @@ regex_str = [emoticons_str, r'<[^>]+>',  # HTML tags
              r'(?:[\w_]+)',  # other words
              r'(?:\S)']  # anything else
 
-
 Words_to_Track = ['Natal','felicidade','amor','paz','alegria','árvore','família','união',
                   'champagne','luz','trenó','presentes','beijos','abraços','renas',
                   'papai noel','saco de presentes',
                   'bebedeira','festa de fim de ano','fim de ano','sexo','camisinha','suruba',
                   'ano novo', 'dinheiro']
-
+# Como estamos em um período de festas de fim de ano, selecionamos termos que tem a ver com o momento e com as atividades que 
+# ocorrem nestes períodos.
 Qtd_id = 1
 
 
@@ -87,7 +87,6 @@ def process(text: object, tokenizer: object = TweetTokenizer(), stopwords: objec
     tokens = tokenizer.tokenize(text)
 
     # If we want to normalize contraction, uncomment this
-
     # tokens = normalize_contractions(tokens)
 
     return [tok for tok in tokens if tok not in stopwords and not tok.isdigit()]
@@ -116,9 +115,7 @@ class StdOutListener(StreamListener):
             #text = preprocess(tweet['text'])
 
             tokens = process(text=tweet.get('text', ''),
-
                              tokenizer=tweet_tokenizer,
-
                              stopwords=stopword_list)
 
             obj = {'created_at':dt, 'id_str': id_str, 'text': tokens, 'language': lingua}
@@ -128,35 +125,19 @@ class StdOutListener(StreamListener):
             Qtd_id += 1
 
             print("id: %d" % Qtd_id)
-
             #print (hora)
-
             #print ("dia:%d" % dia)
-
             #print ("mes:%d" % mes)
-
             print(time.strftime("%a, %d %b %Y %H:%M:%S +0000", dt))
-
-
 
             return True
 
-
-
         except BaseException as e:
 
-
-
             sys.stderr.write("Error on_data: {}\n".format(e))
-
-
-
             time.sleep(15)
 
-
-
         return True
-
 
 
     def on_error(self, status):
@@ -166,50 +147,30 @@ class StdOutListener(StreamListener):
 
 
 
-
-
-
 if __name__ == '__main__':
 
 
-
-
-
     tweet_tokenizer = TweetTokenizer()
-
     punct = list(string.punctuation)
-
     stopword_list = stopwords.words('portuguese') + punct + ['rt', 'via']
-
-
 
     # Below code  is for making connection with mongoDB
 
     client = pymongo.MongoClient('localhost', 27017)
-
     db = client.tweet_database
-
     print("db name = %s" % db.name)
-
     collection = db.tweet_mega
-
     print("db Collection name = %s" % db.collection)
 
 
-
     # This handles Twitter authetification and the connection to Twitter Streaming AP
-
     l = StdOutListener()
-
     auth = OAuthHandler(consumer_Key, consumer_Secret)
-
     auth.set_access_token(access_Token, access_Secret)
-
     stream = Stream(auth, l)
-
-
 
     # This line filter Twitter Streams to capture data
 
     stream.filter(track=Words_to_Track)
 '''
+

@@ -334,10 +334,10 @@ Type "it" for more
 { "_id" : ISODate("2016-12-12T13:00:00Z"), "value" : { "count" : 138 } }
 ```
 ### FONTES DE PESQUISA
-Para executar este trabalho práticos foram utilizadas as seguintes fontes de pesquisa:
-a) Mining Twitter Data with Python - Bonzanini, Marco - (https://marcobonzanini.com/2015/03/02/mining-twitter-data-with-python-part-1/)
-b) Twitter Data Analytics - Shamanth Kumar, Fred Morstatter, and Huan Liu - (http://tweettracker.fulton.asu.edu/tda/)
-c) StackOverflow - um ótimo lugar para se buscar soluções para problemas já conhecidos.
+Para executar este trabalho práticos foram utilizadas as seguintes fontes de pesquisa:  
+a. Mining Twitter Data with Python - Bonzanini, Marco - (https://marcobonzanini.com/2015/03/02/mining-twitter-data-with-python-part-1/) 
+b. Twitter Data Analytics - Shamanth Kumar, Fred Morstatter, and Huan Liu - (http://tweettracker.fulton.asu.edu/tda/)  
+c. StackOverflow - um ótimo lugar para se buscar soluções para problemas já conhecidos.  
 
 As duas primeiras fontes de pesquisa são muito boas, pois lhe municiam de conceitos o que lhe permite depois criar. Já o StackOverflow é um bom lugar para se buscar soluções, códigos ou novos algorítimos para desenvolver os conceitos que você aprendeu.
 

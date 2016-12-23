@@ -55,10 +55,9 @@ Vemos que o range de palavras variam bastante indo de uma noção religiosa cris
 A coleta dos tweets é feita através do acesso ao Twitter, pela aplicação que foi criada inicialmente no twitter.
 Quando criamos a aplicação no twitter chaves e tokens de acesso são criados para que apenas o dono da aplicação possa fazer uso da mesma.
 Ex.: 
-|ConsumerKey (API Key)|rPQLXBYOnk3TbKgzX2Qe8TfJx|
-|---|---|
-|Consumer Secret (API Secret)|t31Pi0v4lJfMaZ4H9csEqt2uUwotiTDLC7waxHAnAWtHA3Uf3A|
-|---|---|
+| ConsumerKey (API Key) | rPQLXBYOnk3TbKgzX2Qe8TfJx |
+| Consumer Secret (API Secret) | t31Pi0v4lJfMaZ4H9csEqt2uUwotiTDLC7waxHAnAWtHA3Uf3A |
+
 Assim temos de passar tokens e dados de acesso a aplicação para que nosso acesso seja liberado.
 
 

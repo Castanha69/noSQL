@@ -119,7 +119,7 @@ No código contamos os termos da sequinte forma:
         count_all.update(terms_bigram)
 ```
 Por INCRÍVEL que pareça, o código em Python rodou com sucesso, porém demorou mais de uma hora para chegar ao fim.
-O resultado desta análise foi a seguinte:
+O resultado desta análise foi a seguinte:  
 [(('el', 'amor'), 73273),  
 (('mi', 'amor'), 31323),  
 (('❤', '️'), 26471),  
@@ -142,7 +142,7 @@ Outro ponto importante é que o código que roda no MongoDB está em JAVA SCRIPT
 
 Assim primeiramente no Shell do MongoDB criamos o Índice:
 ```js
-db.tweet_mega.createIndex({'text':1})
+db.tweet_coll_token.createIndex({'text':1})
 ```
 Para fazermos a identificação dos termos utilizamos então a função de mapReduce do MongoDB que permite identificar os termos e somá-los.
 ```js

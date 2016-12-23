@@ -333,4 +333,13 @@ Type "it" for more
 { "_id" : ISODate("2016-12-11T11:00:00Z"), "value" : { "count" : 233 } }
 { "_id" : ISODate("2016-12-12T13:00:00Z"), "value" : { "count" : 138 } }
 ```
+### FONTES DE PESQUISA
+Para executar este trabalho práticos foram utilizadas as seguintes fontes de pesquisa:
+a) Mining Twitter Data with Python - Bonzanini, Marco - (https://marcobonzanini.com/2015/03/02/mining-twitter-data-with-python-part-1/)
+b) Twitter Data Analytics - Shamanth Kumar, Fred Morstatter, and Huan Liu - (http://tweettracker.fulton.asu.edu/tda/)
+c) StackOverflow - um ótimo lugar para se buscar soluções para problemas já conhecidos.
 
+As duas primeiras fontes de pesquisa são muito boas, pois lhe municiam de conceitos o que lhe permite depois criar. Já o StackOverflow é um bom lugar para se buscar soluções, códigos ou novos algorítimos para desenvolver os conceitos que você aprendeu.
+
+O item (a) tem foco apenas em Python e arquivos txt ou Json, no entanto é muito rico no que tange a text mining, indo além da frequência de termos e entrando no sentimento dos textos. Muito interessante.
+O item (b) tem já o foco sobre o MongoDB e tal como o primeiro lhe municia de muitos conceitos e também vai muito além da análise simples de termos. 

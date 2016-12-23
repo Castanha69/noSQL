@@ -336,6 +336,7 @@ Type "it" for more
 ### FONTES DE PESQUISA
 Para executar este trabalho práticos foram utilizadas as seguintes fontes de pesquisa:  
 a. Mining Twitter Data with Python - Bonzanini, Marco - (https://marcobonzanini.com/2015/03/02/mining-twitter-data-with-python-part-1/) 
+
 b. Twitter Data Analytics - Shamanth Kumar, Fred Morstatter, and Huan Liu - (http://tweettracker.fulton.asu.edu/tda/)  
 c. StackOverflow - um ótimo lugar para se buscar soluções para problemas já conhecidos.  
 

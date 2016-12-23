@@ -7,7 +7,7 @@
 3. Volume por hora do dia:
 
 
-- [1] **termos mais frequentes:**
+####[1] **termos mais frequentes:**
 Escolhemos a rede social TWITTER como objeto de nosso trabalho, por já termos tido uma experiência inicial com a mesma em aula.
 Para a captura dos dados, foi desenvolvido um código em Python para capturar tweets e em seguida armazená-los. Como efeito de estudo armazenamos estes dados em dois formatos: arquivo json e dentro do Banco de Dados MongoDB para que pudéssemos praticar os dois métodos.
 

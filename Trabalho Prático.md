@@ -133,7 +133,7 @@ O resultado desta análise foi a seguinte:
 (('amor', 'deus'), 11255)]
 
 Um fato interessante a se notar aqui é que as palavras mais "pagans" ou de baixo calão, não aparecem entre as 10 primeiras. Logo, podemos inferir que as pessoas neste período em que estamos dão mais valor ao sentido religioso e a união de suas famílias.
-
+O código deste processo pode ser encontrado em **Term_Frequency.py**
 
 #### 2. Código Java Script - MongoDB
 Em um segundo momento fizemos a contagem dos termos mais frequentes utilizando a própria "engine" do MongoDB, que nos dá muita performance.
@@ -175,7 +175,7 @@ db.word_count.find().sort({value:-1})
 
 Como vêem utilizamos a collection tweet_coll_token pois ela já estava tratada e não continga pontuação e seus termos já estavam em forma de token.
 
-O mesmo procedimento que demorou mais de uma hora para ser concluído no Python, dentro do MongoDB demorou menos de 05 minutos.
+O mesmo procedimento que demorou mais de uma hora para ser concluído no Python, dentro do MongoDB demorou **menos de 05 minutos**.
 
 O resultado foi o seguinte:
 ```js
@@ -201,9 +201,133 @@ O resultado foi o seguinte:
 { "_id" : "q", "value" : 52856 }
 { "_id" : "vida", "value" : 51512 }
 ```
+Infelizmente não consegui fazer a mesma análise de bigrams com o Js e MongoDB.
 
 
+###[2] **VOLUME POR DIA:**
 
+Para descobrirmos o volume de tweets por dia teríamos de trabalhar com as datas e horas em que os twitters foram postados. Isto apresenta um novo desafio, porém passível de solução.
+A solução é similar a anterior, porém ao invés de termos similares, temos de encontrar dias similares.
+Assim temos de trabalhar com o timestamp dos twitters.
 
+Utilizando-se Python e a biblioteca PANDA esta tafefa fica muito fácil, pois a panda já traz muitos algorítmos prontos para executar este tipo de tarefa. No entanto, devido ao grande tamanho do arquivo, a tarefa não pode ser concluída utilizando-se este método, pois há consumo excessivo de memória e por fim estouro, causando a parada do processo.
+
+A solução é trabalhar diretamente com o MongoDB que possui performance e engine para tal. Como temos de trabalhar com o tempo, temos de buscar os timestamps de cada twitter e somar os que são do mesmo dia. Isto pode ser feito com a função getTimestamp() e de novo utilizando-se a função mapReduce do MongoDB.
+
+Utilizamos a coleção tweet_collection que contém os twitters completos e sem tratamento, já que o que estamos buscando é apenas o período em que o mesmo foi postado.
+Novamente, é imprescindível criarmos um Índice, pois sem o mesmo teremos um problema com o mapReduce.
+
+```js
+var map = function() {
+    var datetime = this._id.getTimestamp();
+
+    var created_at_Day = new Date(datetime.getFullYear(),
+                                     datetime.getMonth(),
+                                     datetime.getDate());
+    emit(created_at_Day, {count: 1});
+}
+
+var reduce = function(key, values) {
+    var total = 0;
+    for(var i = 0; i < values.length; i++) { total += values[i].count; }
+    return {count: total};
+}
+
+db.tweet_collection.mapReduce( map, reduce, { "out": "tweet_perDay" } );
+
+db.tweet_perDay.find().limit(10).sort({"_id":-1})
+```
+Para a minha grande surpresa, esta pesquisa tomou menos de 1 minuto, o que aponta o poder do MongoDB em executar estas tarefas de memória e CPU intensivas.
+Segue o resultado:
+```js
+""" Resultado: """
+> db.tweet_collection.mapReduce( map, reduce, { "out": "tweet_perDay" } );
+{
+        "result" : "tweet_perDay",
+        "timeMillis" : 41389,
+        "counts" : {
+                "input" : 1294918,
+                "emit" : 1294918,
+                "reduce" : 12952,
+                "output" : 3
+        },
+        "ok" : 1
+}
+```
+> db.tweet_perDay.find().limit(10).sort({"_id":-1})
+{ "_id" : ISODate("2016-12-**12**T02:00:00Z"), "value" : { "count" : 586075 } }
+{ "_id" : ISODate("2016-12-**11**T02:00:00Z"), "value" : { "count" : 687865 } }
+{ "_id" : ISODate("2016-12-**10**T02:00:00Z"), "value" : { "count" : 20978 } }
+
+Acredito que esta operação também possa ser conseguida com a função AGGREGATE, no entanto a Aggregate não tem a função de pegar o timestamp do twitter.
+
+###[3] **VOLUME POR HORA:**
+A solução é igual a anterior. Novamente utilizaremos a collection tweet_collection.
+O Código e resultados estão apresentados abaixo:
+```js
+var map = function() {
+    var datetime = this._id.getTimestamp();
+
+    var created_at_hour = new Date(datetime.getFullYear(),
+                                     datetime.getMonth(),
+                                     datetime.getDate(),
+                                     datetime.getHours());
+    emit(created_at_hour, {count: 1});
+}
+
+var reduce = function(key, values) {
+    var total = 0;
+    for(var i = 0; i < values.length; i++) { total += values[i].count; }
+    return {count: total};
+}
+
+db.tweet_collection.mapReduce( map, reduce, { "out": "tweet_perHour" } );
+
+db.tweet_perHour.find().limit(10).sort({"_id":-1})
+```
+#### Resultado:
+> db.tweet_collection.mapReduce( map, reduce, { "out": "tweet_perHour" } );
+{
+        "result" : "tweet_perHour",
+        "timeMillis" : 22658,
+        "counts" : {
+                "input" : 1294918,
+                "emit" : 1294918,
+                "reduce" : 12976,
+                "output" : 27
+        },
+        "ok" : 1
+
+> db.tweet_perHour.find().sort({"value":-1})
+{ "_id" : ISODate("2016-12-12T02:00:00Z"), "value" : { "count" : 138047 } }
+{ "_id" : ISODate("2016-12-12T03:00:00Z"), "value" : { "count" : 127166 } }
+{ "_id" : ISODate("2016-12-11T02:00:00Z"), "value" : { "count" : 98605 } }
+{ "_id" : ISODate("2016-12-12T04:00:00Z"), "value" : { "count" : 83084 } }
+{ "_id" : ISODate("2016-12-11T19:00:00Z"), "value" : { "count" : 74931 } }
+{ "_id" : ISODate("2016-12-11T18:00:00Z"), "value" : { "count" : 66356 } }
+{ "_id" : ISODate("2016-12-11T21:00:00Z"), "value" : { "count" : 62524 } }
+{ "_id" : ISODate("2016-12-11T20:00:00Z"), "value" : { "count" : 59585 } }
+{ "_id" : ISODate("2016-12-11T17:00:00Z"), "value" : { "count" : 58072 } }
+{ "_id" : ISODate("2016-12-11T14:00:00Z"), "value" : { "count" : 54621 } }
+{ "_id" : ISODate("2016-12-12T05:00:00Z"), "value" : { "count" : 54373 } }
+{ "_id" : ISODate("2016-12-12T00:00:00Z"), "value" : { "count" : 52339 } }
+{ "_id" : ISODate("2016-12-11T04:00:00Z"), "value" : { "count" : 50691 } }
+{ "_id" : ISODate("2016-12-12T10:00:00Z"), "value" : { "count" : 42768 } }
+{ "_id" : ISODate("2016-12-11T03:00:00Z"), "value" : { "count" : 40784 } }
+{ "_id" : ISODate("2016-12-12T06:00:00Z"), "value" : { "count" : 36294 } }
+{ "_id" : ISODate("2016-12-12T09:00:00Z"), "value" : { "count" : 35908 } }
+{ "_id" : ISODate("2016-12-11T10:00:00Z"), "value" : { "count" : 33995 } }
+{ "_id" : ISODate("2016-12-12T08:00:00Z"), "value" : { "count" : 28108 } }
+{ "_id" : ISODate("2016-12-12T07:00:00Z"), "value" : { "count" : 27482 } }
+Type "it" for more
+>
+> it
+{ "_id" : ISODate("2016-12-11T01:00:00Z"), "value" : { "count" : 20978 } }
+{ "_id" : ISODate("2016-12-11T15:00:00Z"), "value" : { "count" : 19617 } }
+{ "_id" : ISODate("2016-12-12T11:00:00Z"), "value" : { "count" : 12707 } }
+{ "_id" : ISODate("2016-12-12T01:00:00Z"), "value" : { "count" : 9821 } }
+{ "_id" : ISODate("2016-12-11T16:00:00Z"), "value" : { "count" : 5691 } }
+{ "_id" : ISODate("2016-12-11T11:00:00Z"), "value" : { "count" : 233 } }
+{ "_id" : ISODate("2016-12-12T13:00:00Z"), "value" : { "count" : 138 } }
 
 

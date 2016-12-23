@@ -94,12 +94,13 @@ Para esta tarefa de transformar em TOKENS o texto utilizamos os pacotes NLTK, qu
 
 O código completo pode ser visto no arquivo Coleta_Tweets.py.  
 
-Para efeito de estudo, fizemos duas coletas distintas de twitters, sendo uma coletando e armazenando os twitters sem tratamento e a segunda com o texto já transformado em tokens. Assim foram criados no MongoDB duas coleções: **tweet_collection** e **tweet_mega** respectivamente.  
+Para efeito de estudo, fizemos duas coletas distintas de twitters, sendo uma coletando e armazenando os twitters sem tratamento e a segunda com o texto já transformado em tokens. Assim foram criados no MongoDB duas coleções: **tweet_collection** e **tweet_coll_token** respectivamente.  
 
 
 ### IDENTIFICAÇÃO DOS TERMOS MAIS FREQUENTES.
 Para então tratarmos os twitters que foram coletados foram desenvolvidos dois códigos distintos, sendo um em Python e o segundo em Java Script, para rodar direto do MongoDB, ou seja, utilizando as "engines" do banco de dados.
 
+#### 1. Código Python
 Nesta fase, não mais precisamos acessar o Twitter, logo só acessamos o MongoDB:
 ```python
     client = pymongo.MongoClient('localhost', 27017)
@@ -118,7 +119,23 @@ No código contamos os termos da sequinte forma:
         count_all.update(terms_bigram)
 ```
 Por INCRÍVEL que pareça, o código em Python rodou com sucesso, porém demorou mais de uma hora para chegar ao fim.
+O resultado desta análise foi a seguinte:
+[(('el', 'amor'), 73273),  
+(('mi', 'amor'), 31323),  
+(('❤', '️'), 26471),  
+(('en', 'el'), 26029),  
+(('amor', 'y'), 18267),  
+(('amor', 'es'), 15639),  
+(('😂', '😂'), 13190),  
+(('un', 'amor'), 12408),  
+(('jesus', 'christ'), 12024),  
+(('amor', 'vida'), 11841),  
+(('amor', 'deus'), 11255)]
 
+Um fato interessante a se notar aqui é que as palavras mais "pagans" ou de baixo calão, não aparecem entre as 10 primeiras. Logo, podemos inferir que as pessoas neste período em que estamos dão mais valor ao sentido religioso e a união de suas famílias.
+
+
+#### 2. Código Java Script - MongoDB
 Em um segundo momento fizemos a contagem dos termos mais frequentes utilizando a própria "engine" do MongoDB, que nos dá muita performance.
 Um ponto importante aqui: É necessário criar-se um ÍNDICE antes para que o MongoDB possa operar com performance.
 Outro ponto importante é que o código que roda no MongoDB está em JAVA SCRIPT.
@@ -128,6 +145,40 @@ Assim primeiramente no Shell do MongoDB criamos o Índice:
 db.tweet_mega.createIndex({'text':1})
 ```
 Para fazermos a identificação dos termos utilizamos então a função de mapReduce do MongoDB que permite identificar os termos e somá-los.
+```js
+var map = function() {  
+    var text = this.text;
+    if (text) { 
+        // quick lowercase to normalize per your requirements
+        // text = text.toLowerCase(); 
+        for (var i = text.length - 1; i >= 0; i--) {
+            if (text[i])  {      // make sure there's something
+               emit(text[i], 1); // store a 1 for each word
+            }
+        }
+    }
+};
+
+var reduce = function( key, values ) {    
+    var count = 0;    
+    values.forEach(function(v) {            
+        count +=v;    
+    });
+    return count;
+}
+
+
+db.tweet_coll_token.mapReduce(map, reduce, {out: "word_count"})
+
+db.word_count.find().sort({value:-1})
+```
+
+Como vêem utilizamos a collection tweet_coll_token pois ela já estava tratada e não continga pontuação e seus termos já estavam em forma de token.
+
+O mesmo procedimento que demorou mais de uma hora para ser concluído no Python, dentro do MongoDB demorou menos de 20 minutos.
+
+O resultado foi o seguinte:
+
 
 
 

@@ -92,7 +92,42 @@ tokens = process(text=tweet.get('text', ''),
 ```
 Para esta tarefa de transformar em TOKENS o texto utilizamos os pacotes NLTK, que é uma plataforma líder para construir programas em Python para trabalhar com dados de linguagem humana.
 
+O código completo pode ser visto no arquivo Coleta_Tweets.py.  
 
+Para efeito de estudo, fizemos duas coletas distintas de twitters, sendo uma coletando e armazenando os twitters sem tratamento e a segunda com o texto já transformado em tokens. Assim foram criados no MongoDB duas coleções: **tweet_collection** e **tweet_mega** respectivamente.  
+
+
+### IDENTIFICAÇÃO DOS TERMOS MAIS FREQUENTES.
+Para então tratarmos os twitters que foram coletados foram desenvolvidos dois códigos distintos, sendo um em Python e o segundo em Java Script, para rodar direto do MongoDB, ou seja, utilizando as "engines" do banco de dados.
+
+Nesta fase, não mais precisamos acessar o Twitter, logo só acessamos o MongoDB:
+```python
+    client = pymongo.MongoClient('localhost', 27017)
+    db = client.tweet_database
+    collection = db.tweet_collection
+```
+Como vê, estamos utilizando a coleção que contem o twitter puro, com seus campos intactos, por isto, fizemos a tokenização do texto na hora de contar os termos. Esta contagem é feita utilizando-se um contador, count_all = Counter().
+
+Buscando um conhecimento melhor do sentido que as palavras teriam, utilizamos a função "bigrams" para contar dois tokens que aparecam juntos na mesma frase, desta forma conseguimos ter alguma idéia do que significado do twitter.
+
+No código contamos os termos da sequinte forma:
+```python
+        terms_all = [term for term in tokens]
+        terms_bigram = bigrams(terms_all) #juntei dois tokens dos mesmos tweets, buscando mais sentido.
+        # Update the counter
+        count_all.update(terms_bigram)
+```
+Por INCRÍVEL que pareça, o código em Python rodou com sucesso, porém demorou mais de uma hora para chegar ao fim.
+
+Em um segundo momento fizemos a contagem dos termos mais frequentes utilizando a própria "engine" do MongoDB, que nos dá muita performance.
+Um ponto importante aqui: É necessário criar-se um ÍNDICE antes para que o MongoDB possa operar com performance.
+Outro ponto importante é que o código que roda no MongoDB está em JAVA SCRIPT.
+
+Assim primeiramente no Shell do MongoDB criamos o Índice:
+```js
+db.tweet_mega.createIndex({'text':1})
+```
+Para fazermos a identificação dos termos utilizamos então a função de mapReduce do MongoDB que permite identificar os termos e somá-los.
 
 
 

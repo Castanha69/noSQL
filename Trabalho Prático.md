@@ -253,11 +253,12 @@ Segue o resultado:
         },
         "ok" : 1
 }
-```
+
 > db.tweet_perDay.find().limit(10).sort({"_id":-1})
-{ "_id" : ISODate("2016-12-**12**T02:00:00Z"), "value" : { "count" : 586075 } }
-{ "_id" : ISODate("2016-12-**11**T02:00:00Z"), "value" : { "count" : 687865 } }
-{ "_id" : ISODate("2016-12-**10**T02:00:00Z"), "value" : { "count" : 20978 } }
+{ "_id" : ISODate("2016-12-**12**T02:00:00Z"), "value" : { "count" : 586075 } }  
+{ "_id" : ISODate("2016-12-**11**T02:00:00Z"), "value" : { "count" : 687865 } }  
+{ "_id" : ISODate("2016-12-**10**T02:00:00Z"), "value" : { "count" : 20978 } } 
+```
 
 Acredito que esta operação também possa ser conseguida com a função AGGREGATE, no entanto a Aggregate não tem a função de pegar o timestamp do twitter.
 
@@ -286,17 +287,19 @@ db.tweet_collection.mapReduce( map, reduce, { "out": "tweet_perHour" } );
 db.tweet_perHour.find().limit(10).sort({"_id":-1})
 ```
 #### Resultado:
-> db.tweet_collection.mapReduce( map, reduce, { "out": "tweet_perHour" } );
-{
-        "result" : "tweet_perHour",
-        "timeMillis" : 22658,
-        "counts" : {
-                "input" : 1294918,
-                "emit" : 1294918,
-                "reduce" : 12976,
-                "output" : 27
-        },
-        "ok" : 1
+```js
+> db.tweet_collection.mapReduce( map, reduce, { "out": "tweet_perHour" } );  
+{  
+        "result" : "tweet_perHour",  
+        "timeMillis" : 22658,  
+        "counts" : {  
+                "input" : 1294918,  
+                "emit" : 1294918,  
+                "reduce" : 12976,  
+                "output" : 27  
+             },  
+        "ok" : 1  
+        
 
 > db.tweet_perHour.find().sort({"value":-1})
 { "_id" : ISODate("2016-12-12T02:00:00Z"), "value" : { "count" : 138047 } }
@@ -329,5 +332,5 @@ Type "it" for more
 { "_id" : ISODate("2016-12-11T16:00:00Z"), "value" : { "count" : 5691 } }
 { "_id" : ISODate("2016-12-11T11:00:00Z"), "value" : { "count" : 233 } }
 { "_id" : ISODate("2016-12-12T13:00:00Z"), "value" : { "count" : 138 } }
-
+```
 

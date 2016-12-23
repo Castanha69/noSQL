@@ -41,7 +41,7 @@ Já no caso do MongoDB, é feito pelo comando: __tweetind = collection.insert_on
 ### PALAVRAS DE BUSCA
 Para este trabalho prático escolhemos palavras de busca voltadas para o momento em que estamos vivendo - Natal, Fim de Ano, Festas.
 Assim as palavras selecionadas foram:
-```
+```python
 Words_to_Track = ['Natal','felicidade','amor','paz','alegria','árvore','família','união',
                   'champagne','luz','trenó','presentes','beijos','abraços','renas',
                   'papai noel','saco de presentes',
@@ -55,8 +55,8 @@ Vemos que o range de palavras variam bastante indo de uma noção religiosa cris
 A coleta dos tweets é feita através do acesso ao Twitter, pela aplicação que foi criada inicialmente no twitter.
 Quando criamos a aplicação no twitter chaves e tokens de acesso são criados para que apenas o dono da aplicação possa fazer uso da mesma.
 Ex.: 
-| ConsumerKey (API Key) | rPQLXBYOnk3TbKgzX2Qe8TfJx |
-| Consumer Secret (API Secret) | t31Pi0v4lJfMaZ4H9csEqt2uUwotiTDLC7waxHAnAWtHA3Uf3A |
+`ConsumerKey (API Key)` -> rPQLXBYOnk3TbKgzX2Qe8TfJx
+`Consumer Secret (API Secret)` -> t31Pi0v4lJfMaZ4H9csEqt2uUwotiTDLC7waxHAnAWtHA3Uf3A 
 
 Assim temos de passar tokens e dados de acesso a aplicação para que nosso acesso seja liberado.
 

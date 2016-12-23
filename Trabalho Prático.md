@@ -175,10 +175,32 @@ db.word_count.find().sort({value:-1})
 
 Como vêem utilizamos a collection tweet_coll_token pois ela já estava tratada e não continga pontuação e seus termos já estavam em forma de token.
 
-O mesmo procedimento que demorou mais de uma hora para ser concluído no Python, dentro do MongoDB demorou menos de 20 minutos.
+O mesmo procedimento que demorou mais de uma hora para ser concluído no Python, dentro do MongoDB demorou menos de 05 minutos.
 
 O resultado foi o seguinte:
-
+```js
+> db.word_count.find().limit(100).sort({'value':-1})
+{ "_id" : "amor", "value" : 461860 }
+{ "_id" : "deus", "value" : 193588 }
+{ "_id" : "…", "value" : 177886 }
+{ "_id" : "el", "value" : 161307 }
+{ "_id" : "é", "value" : 146218 }
+{ "_id" : "jesus", "value" : 131832 }
+{ "_id" : "y", "value" : 123877 }
+{ "_id" : "la", "value" : 90653 }
+{ "_id" : "en", "value" : 84001 }
+{ "_id" : "oi", "value" : 83701 }
+{ "_id" : "...", "value" : 83104 }
+{ "_id" : "es", "value" : 73122 }
+{ "_id" : "mi", "value" : 70555 }
+{ "_id" : "natal", "value" : 65515 }
+{ "_id" : "to", "value" : 65463 }
+{ "_id" : "pra", "value" : 63406 }
+{ "_id" : "❤", "value" : 60484 }
+{ "_id" : "the", "value" : 60424 }
+{ "_id" : "q", "value" : 52856 }
+{ "_id" : "vida", "value" : 51512 }
+```
 
 
 
